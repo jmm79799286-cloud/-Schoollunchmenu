@@ -1,0 +1,1126 @@
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>백암고등학교 학급 홈페이지 - 백암고 급식톡</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Noto Sans KR) -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        baegam: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            navy: '#1e293b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f8fafc; }
+        .chat-scroll::-webkit-scrollbar { width: 6px; }
+        .chat-scroll::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 9999px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header Navbar -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-xl shadow-md shadow-emerald-200">
+                    백
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs font-semibold px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full">백암고등학교</span>
+                        <span class="text-xs text-slate-500">3학년 2반 학급홈피</span>
+                    </div>
+                    <h1 class="text-lg font-bold text-slate-900 leading-tight">백암고 급식톡 & 스마트 급식표</h1>
+                </div>
+            </div>
+            <div class="hidden md:flex items-center space-x-2 text-sm">
+                <span class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 font-medium hover:bg-slate-200 transition cursor-pointer">
+                    <i class="fa-solid fa-bullhorn text-emerald-600 mr-1.5"></i>학급알림장
+                </span>
+                <span class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-medium shadow-sm hover:bg-emerald-700 transition cursor-pointer">
+                    <i class="fa-solid fa-utensils mr-1.5"></i>백암 급식톡
+                </span>
+                <button onclick="openMenuModal()" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-medium shadow-sm transition">
+                    <i class="fa-solid fa-pen-to-square mr-1.5"></i>급식 메뉴 등록/수정
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-4 py-6 flex-grow w-full space-y-6">
+
+        <!-- Banner / Hero Section -->
+        <div class="bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-800 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
+            <div class="absolute -right-6 -bottom-8 opacity-15 text-white">
+                <i class="fa-solid fa-bowl-rice text-9xl"></i>
+            </div>
+            <div class="relative z-10 max-w-2xl">
+                <span class="inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-semibold mb-2">
+                    <i class="fa-solid fa-sparkles mr-1 text-yellow-300"></i>오늘도 맛있는 백암고 급식시간!
+                </span>
+                <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight">영양소 · 칼로리 · 맛 평가까지 한눈에!</h2>
+                <p class="text-emerald-100 text-sm md:text-base mt-1">
+                    챗봇에게 <span class="bg-white/20 px-2 py-0.5 rounded font-bold underline decoration-yellow-300">"급식 알려줘"</span>라고 질문하거나, 원하는 날짜 카드를 터치해 상세 표를 확인해보세요!
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 1: 백암고 급식톡 (Interactive Chatbot) -->
+        <section class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col md:flex-row min-h-[420px]">
+            <!-- Chat Left Sidebar / Info -->
+            <div class="bg-slate-800 text-white p-5 md:w-1/3 flex flex-col justify-between border-b md:border-b-0 md:border-r border-slate-700">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center text-2xl shadow-lg shadow-emerald-900/50">
+                            🤖
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-white">백암이 급식봇</h3>
+                            <p class="text-xs text-emerald-400 flex items-center">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping mr-1.5"></span>
+                                실시간 자동 응답 중
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                        학생과 선생님들을 위한 백암고 스마트 급식 알리미입니다. 궁금한 날짜나 영양 정보, 맛 평가를 자유롭게 물어보세요!
+                    </p>
+                    
+                    <div class="space-y-2">
+                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">추천 질문 버튼 (클릭해보세요)</p>
+                        <div class="flex flex-col gap-2">
+                            <button onclick="sendQuickMessage('급식 알려줘')" class="text-left text-xs bg-slate-700/70 hover:bg-emerald-600/40 hover:border-emerald-500 border border-slate-600 rounded-xl p-2.5 transition flex items-center justify-between text-slate-200">
+                                <span>🍱 "급식 알려줘" (오늘 급식)</span>
+                                <i class="fa-solid fa-chevron-right text-slate-400 text-2xs"></i>
+                            </button>
+                            <button onclick="sendQuickMessage('내일 급식 칼로리 알려줘')" class="text-left text-xs bg-slate-700/70 hover:bg-emerald-600/40 hover:border-emerald-500 border border-slate-600 rounded-xl p-2.5 transition flex items-center justify-between text-slate-200">
+                                <span>🔥 "내일 급식 칼로리 알려줘"</span>
+                                <i class="fa-solid fa-chevron-right text-slate-400 text-2xs"></i>
+                            </button>
+                            <button onclick="sendQuickMessage('영양소 정보 보여줘')" class="text-left text-xs bg-slate-700/70 hover:bg-emerald-600/40 hover:border-emerald-500 border border-slate-600 rounded-xl p-2.5 transition flex items-center justify-between text-slate-200">
+                                <span>🥗 "영양소 정보 보여줘"</span>
+                                <i class="fa-solid fa-chevron-right text-slate-400 text-2xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-4 border-t border-slate-700 flex items-center justify-between text-xs text-slate-400">
+                    <span>백암고 영양실 제공</span>
+                    <span id="currentTimeBadge" class="bg-slate-700 px-2 py-0.5 rounded text-emerald-300 font-mono"></span>
+                </div>
+            </div>
+
+            <!-- Chat Right Area -->
+            <div class="flex-1 flex flex-col justify-between bg-slate-50/50">
+                <!-- Chat Messages Scroll Area -->
+                <div id="chatWindow" class="p-4 space-y-4 overflow-y-auto max-h-[350px] md:max-h-[380px] chat-scroll flex-grow">
+                    <!-- Bot Welcome Message -->
+                    <div class="flex items-start space-x-2.5">
+                        <div class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
+                            백암
+                        </div>
+                        <div class="bg-white border border-slate-200 rounded-2xl rounded-tl-none p-3.5 shadow-sm text-sm max-w-[85%] space-y-2">
+                            <p class="font-medium text-slate-800">
+                                안녕! 나는 백암고 급식 도우미 <strong class="text-emerald-600">백암이</strong>야! 🍱
+                            </p>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                채팅창에 <span class="font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">"급식 알려줘"</span> 라고 보내거나 왼쪽 버튼을 눌러줘. 오늘/내일/주간 급식 식단, 칼로리, 영양소, 맛 정보까지 한 번에 알려줄게!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Input Form -->
+                <div class="p-3 bg-white border-t border-slate-200">
+                    <form id="chatForm" onsubmit="handleChatSubmit(event)" class="flex items-center space-x-2">
+                        <input type="text" id="chatInput" placeholder="'급식 알려줘' 또는 질문을 입력하세요..." 
+                               class="flex-1 bg-slate-100 border border-slate-300 focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 rounded-xl px-4 py-2.5 text-sm transition outline-none">
+                        <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2.5 rounded-xl transition flex items-center justify-center shrink-0 shadow-sm">
+                            <i class="fa-solid fa-paper-plane text-sm mr-1"></i>
+                            <span class="hidden sm:inline text-sm">전송</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: 상단 급식 목록 (Date Cards Carousel / Selector) -->
+        <section class="space-y-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <div class="w-2.5 h-6 bg-emerald-600 rounded-full"></div>
+                    <h3 class="text-lg font-bold text-slate-800">이번 주 백암고 급식목록 (터치하여 선택)</h3>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <span class="text-xs text-slate-500 hidden sm:inline">
+                        <i class="fa-regular fa-hand-pointer text-emerald-600 mr-1"></i>날짜를 클릭하면 아래 상세 표가 바뀌어요
+                    </span>
+                    <button onclick="openMenuModal()" class="text-xs px-2.5 py-1.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-bold rounded-lg transition border border-emerald-300 flex items-center">
+                        <i class="fa-solid fa-plus-circle mr-1"></i>메뉴 등록/수정
+                    </button>
+                </div>
+            </div>
+
+            <!-- Horizontal Scrollable Cards -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3" id="dateCardsContainer">
+                <!-- Javascript will inject 5 weekday cards here -->
+            </div>
+        </section>
+
+        <!-- SECTION 3: 하단 상세 급식표 & 영양 분석 (Tab Container) -->
+        <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-6">
+            
+            <!-- Section Header & Selected Date Title -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-slate-200 gap-3">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-lg" id="selectedDateDayIcon">
+                        월
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span id="selectedDateBadge" class="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+                                2026.10.12 (월요일)
+                            </span>
+                            <span id="calorieBadge" class="text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-0.5 rounded-full">
+                                🔥 820 kcal
+                            </span>
+                        </div>
+                        <h3 class="text-xl font-extrabold text-slate-900 mt-0.5" id="selectedDateTitle">월요일 백암고 추천 급식표</h3>
+                    </div>
+                </div>
+
+                <!-- View Mode Tabs -->
+                <div class="flex bg-slate-100 p-1 rounded-xl self-start md:self-auto text-xs font-medium">
+                    <button onclick="switchTab('table')" id="tabBtnTable" class="px-3.5 py-2 rounded-lg bg-white text-emerald-700 font-bold shadow-sm transition">
+                        <i class="fa-solid fa-table-list mr-1"></i>급식 상세표 & 영양
+                    </button>
+                    <button onclick="switchTab('board')" id="tabBtnBoard" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition">
+                        <i class="fa-solid fa-comments mr-1"></i>맛 한줄평 & 게시판
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB CONTENT 1: 급식표 및 영양소/사진/맛 안내 -->
+            <div id="tabContentTable" class="space-y-6">
+                <!-- Top Summary Cards (Photos, Calorie Meter, Taste Features) -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Photo Card -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold text-slate-500 uppercase">급식 연출 사진</span>
+                            <span class="text-2xs bg-emerald-100 text-emerald-800 font-semibold px-2 py-0.5 rounded-full" id="tasteTagMain">
+                                😋 매콤달콤 & 고소함
+                            </span>
+                        </div>
+                        <div class="relative w-full h-44 rounded-lg overflow-hidden border border-slate-200 bg-slate-200 flex items-center justify-center group shadow-inner">
+                            <img id="mealMainImage" src="" alt="급식 사진" class="w-full h-full object-cover transition duration-300 group-hover:scale-105" onerror="this.src='https://placehold.co/600x400/e2e8f0/475569?text=Baegam+Meal+Photo'">
+                            <div class="absolute bottom-2 right-2 bg-black/60 backdrop-blur-md text-white text-xs px-2.5 py-1 rounded-md">
+                                <i class="fa-solid fa-camera mr-1"></i>오늘의 메인 메뉴
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nutrition Overview Gauge Card -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-xs font-bold text-slate-500 uppercase">1일 권장 영양 충족도</span>
+                                <span class="text-xs font-bold text-emerald-600" id="nutritionScore">균형성 95%</span>
+                            </div>
+                            <p class="text-xs text-slate-600">청소년 성장기 권장 영양 기준에 맞춘 백암고 영양 식단입니다.</p>
+                        </div>
+
+                        <!-- Mini Progress Bars for Nutrients -->
+                        <div class="space-y-2.5 text-xs">
+                            <div>
+                                <div class="flex justify-between mb-1 text-slate-700">
+                                    <span>탄수화물 (Carbs)</span>
+                                    <span class="font-bold" id="carbsVal">95g (29%)</span>
+                                </div>
+                                <div class="w-full bg-slate-200 rounded-full h-2">
+                                    <div id="carbsBar" class="bg-amber-500 h-2 rounded-full transition-all duration-500" style="width: 65%;"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-1 text-slate-700">
+                                    <span>단백질 (Protein)</span>
+                                    <span class="font-bold" id="proteinVal">38g (68%)</span>
+                                </div>
+                                <div class="w-full bg-slate-200 rounded-full h-2">
+                                    <div id="proteinBar" class="bg-emerald-500 h-2 rounded-full transition-all duration-500" style="width: 80%;"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-1 text-slate-700">
+                                    <span>지방 (Fat)</span>
+                                    <span class="font-bold" id="fatVal">18g (35%)</span>
+                                </div>
+                                <div class="w-full bg-slate-200 rounded-full h-2">
+                                    <div id="fatBar" class="bg-blue-500 h-2 rounded-full transition-all duration-500" style="width: 45%;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-200 text-2xs text-slate-500 flex justify-between">
+                            <span>나트륨 적정량 준수</span>
+                            <span>칼슘/비타민 강화</span>
+                        </div>
+                    </div>
+
+                    <!-- Taste Profile & Teacher Tip Card -->
+                    <div class="bg-emerald-50/60 border border-emerald-100 rounded-xl p-4 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center space-x-2 text-emerald-800 font-bold text-sm mb-2">
+                                <i class="fa-solid fa-heart-pulse text-emerald-600"></i>
+                                <span>오늘의 맛 & 영양 포인트</span>
+                            </div>
+                            <ul class="text-xs text-slate-700 space-y-2" id="tasteFeatureList">
+                                <!-- JS injected features -->
+                            </ul>
+                        </div>
+
+                        <div class="bg-white p-3 rounded-lg border border-emerald-200/80 mt-3 shadow-2xs">
+                            <div class="text-2xs font-bold text-emerald-800 flex items-center mb-1">
+                                <i class="fa-solid fa-user-nurse mr-1 text-emerald-600"></i> 영양선생님의 한마디
+                            </div>
+                            <p class="text-xs text-slate-600 italic" id="nutritionistTip">
+                                "시험기간 공부하느라 수고하는 백암고 학생들을 위해 고단백 영양식으로 준비했습니다!"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Meal Table (메뉴 상세 식단표) -->
+                <div>
+                    <h4 class="text-sm font-bold text-slate-800 mb-3 flex items-center">
+                        <i class="fa-solid fa-utensils text-emerald-600 mr-2"></i>
+                        상세 식단 및 구성 표 (Nutritional Menu Table)
+                    </h4>
+                    <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-2xs">
+                        <table class="w-full text-left border-collapse text-xs md:text-sm">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                                    <th class="p-3 w-16 text-center">구분</th>
+                                    <th class="p-3">식단 메뉴명</th>
+                                    <th class="p-3">맛 특징 (Taste)</th>
+                                    <th class="p-3 text-center">칼로리</th>
+                                    <th class="p-3">주요 영양소</th>
+                                    <th class="p-3 text-center">알레르기 정보</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mealTableBody" class="divide-y divide-slate-200 text-slate-700">
+                                <!-- Injected dynamically by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Allergen Info Legend -->
+                <div class="bg-slate-50 rounded-xl p-3 border border-slate-200 text-2xs text-slate-500 space-y-1">
+                    <p class="font-semibold text-slate-700"><i class="fa-solid fa-circle-exclamation mr-1 text-amber-500"></i>알레르기 유발물질 표시 번호 안내:</p>
+                    <p class="leading-relaxed">
+                        ①난류 ②우유 ③메밀 ④땅콩 ⑤대두 ⑥밀 ⑦고등어 ⑧게 ⑨새우 ⑩돼지고기 ⑪복숭아 ⑫토마토 ⑬아황산염 ⑭호두 ⑮닭고기 ⑯소고기 ⑰오징어 ⑱조개류
+                    </p>
+                </div>
+            </div>
+
+            <!-- TAB CONTENT 2: 급식 맛 평가 & 게시판 (Review & Board) -->
+            <div id="tabContentBoard" class="hidden space-y-6">
+                <!-- Write Review Box -->
+                <div class="bg-emerald-50/50 border border-emerald-200 rounded-xl p-4 space-y-3">
+                    <h4 class="text-sm font-bold text-emerald-900 flex items-center">
+                        <i class="fa-solid fa-pen-to-square text-emerald-600 mr-2"></i>
+                        오늘 급식 어땠나요? 맛 한줄평 남기기
+                    </h4>
+                    <form onsubmit="submitReview(event)" class="space-y-3">
+                        <div class="flex flex-wrap items-center gap-3">
+                            <div class="flex items-center space-x-1">
+                                <span class="text-xs text-slate-600 font-medium mr-1">별점:</span>
+                                <select id="reviewRating" class="bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs font-bold text-amber-500 focus:outline-none focus:ring-2 focus:ring-emerald-300">
+                                    <option value="5">⭐⭐⭐⭐⭐ (5.0 - 최상이예요!)</option>
+                                    <option value="4">⭐⭐⭐⭐ (4.0 - 맛있어요!)</option>
+                                    <option value="3">⭐⭐⭐ (3.0 - 무난해요)</option>
+                                    <option value="2">⭐⭐ (2.0 - 아쉬워요)</option>
+                                    <option value="1">⭐ (1.0 - 개선이 필요해요)</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <span class="text-xs text-slate-600 font-medium mr-1">작성자:</span>
+                                <input type="text" id="reviewAuthor" placeholder="예: 3-2 김백암 / 박선생님" required 
+                                       class="bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-300">
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <span class="text-xs text-slate-600 font-medium mr-1">대표 맛 태그:</span>
+                                <select id="reviewTasteTag" class="bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-300">
+                                    <option value="😋 꿀맛탱">😋 꿀맛탱</option>
+                                    <option value="🌶️ 매콤달콤">🌶️️ 매콤달콤</option>
+                                    <option value="🧂 단짠단짠">🧂 단짠단짠</option>
+                                    <option value="🥗 담백건강">🥗 담백건강</option>
+                                    <option value="🍗 고기 최고">🍗 고기 최고</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="flex space-x-2">
+                            <input type="text" id="reviewText" placeholder="급식 후기나 영양 선생님께 전할 응원 한마디를 적어주세요! (예: 닭갈비 양념 완벽했어요!)" required
+                                   class="flex-1 bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-300">
+                            <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-xs transition shrink-0">
+                                등록하기
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Review Feed / Board Table -->
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="text-sm font-bold text-slate-800 flex items-center">
+                            <i class="fa-solid fa-list-check text-emerald-600 mr-2"></i>
+                            백암고 학생 & 선생님 급식 소통 게시판
+                        </h4>
+                        <span class="text-xs text-slate-500" id="reviewCountText">총 3개의 한줄평이 있습니다</span>
+                    </div>
+
+                    <div class="space-y-3" id="reviewListContainer">
+                        <!-- JS injected reviews -->
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-10 py-6 text-center text-xs text-slate-500 space-y-1">
+        <p class="font-semibold text-slate-700">백암고등학교 3학년 2반 학급 공식 급식 알리미</p>
+        <p>본 시스템의 급식표, 영양소, 칼로리 정보는 백암고 영양실 식단 데이터를 기반으로 연동됩니다.</p>
+        <p class="text-2xs text-slate-400 pt-2">© 2026 Baegam High School Class Meal Talk. All Rights Reserved.</p>
+    </footer>
+
+    <!-- 요일별 급식 메뉴 등록 / 수정 모달 (Menu Registration Modal) -->
+    <div id="menuModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 my-8 space-y-4 max-h-[90vh] overflow-y-auto chat-scroll">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-sm">
+                        <i class="fa-solid fa-utensils"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-base">요일별 급식 메뉴 등록 및 수정</h3>
+                        <p class="text-2xs text-slate-500">원하는 요일의 식단 정보와 영양소를 직접 수정하고 등록할 수 있습니다.</p>
+                    </div>
+                </div>
+                <button onclick="closeMenuModal()" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <form id="menuRegisterForm" onsubmit="saveMenuForm(event)" class="space-y-4 text-xs">
+                <!-- 요일 선택 및 기본 정보 -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">요일 선택</label>
+                        <select id="modalDaySelect" onchange="populateModalForm(this.value)" class="w-full bg-white border border-slate-300 rounded-lg p-2 font-bold text-emerald-700 focus:ring-2 focus:ring-emerald-300 outline-none">
+                            <option value="mon">월요일</option>
+                            <option value="tue">화요일</option>
+                            <option value="wed">수요일</option>
+                            <option value="thu">목요일</option>
+                            <option value="fri">금요일</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">날짜 (YYYY.MM.DD)</label>
+                        <input type="text" id="modalDateStr" required placeholder="예: 2026.10.12" class="w-full bg-white border border-slate-300 rounded-lg p-2 outline-none focus:ring-2 focus:ring-emerald-300">
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">총 칼로리 (kcal)</label>
+                        <input type="number" id="modalCalories" required min="100" max="2000" placeholder="예: 820" class="w-full bg-white border border-slate-300 rounded-lg p-2 outline-none focus:ring-2 focus:ring-emerald-300">
+                    </div>
+                </div>
+
+                <!-- 대표 메인메뉴 & 영양사 팁 -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">대표 메인 요리 및 맛 태그</label>
+                        <input type="text" id="modalTasteMain" required placeholder="예: 🔥 매콤달콤 춘천닭갈비" class="w-full bg-white border border-slate-300 rounded-lg p-2 outline-none focus:ring-2 focus:ring-emerald-300">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">급식 연출 사진 URL (선택)</label>
+                        <input type="url" id="modalPhoto" placeholder="https://..." class="w-full bg-white border border-slate-300 rounded-lg p-2 outline-none focus:ring-2 focus:ring-emerald-300">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">영양선생님의 한마디 (Tip)</label>
+                    <input type="text" id="modalTip" required placeholder="예: 공부하느라 수고하는 학생들을 위한 고단백 특식!" class="w-full bg-white border border-slate-300 rounded-lg p-2 outline-none focus:ring-2 focus:ring-emerald-300">
+                </div>
+
+                <!-- 세부 메뉴 구성 (6개) -->
+                <div class="space-y-2 pt-2 border-t border-slate-200">
+                    <div class="flex items-center justify-between">
+                        <label class="font-bold text-slate-800 flex items-center">
+                            <i class="fa-solid fa-list-ul text-emerald-600 mr-1.5"></i>
+                            세부 메뉴 항목 구성 (6개 항목)
+                        </label>
+                        <span class="text-2xs text-slate-400">구분 / 메뉴명 / 맛 특징 / 칼로리 / 주요 영양소 / 알레르기 번호</span>
+                    </div>
+
+                    <div id="modalItemsContainer" class="space-y-2">
+                        <!-- JS injected item input rows -->
+                    </div>
+                </div>
+
+                <!-- Modal Actions -->
+                <div class="flex items-center justify-between pt-4 border-t border-slate-200">
+                    <button type="button" onclick="resetDefaultMeals()" class="text-slate-500 hover:text-red-600 text-xs font-semibold underline flex items-center">
+                        <i class="fa-solid fa-rotate-left mr-1"></i>기본 식단 데이터로 초기화
+                    </button>
+                    <div class="flex space-x-2">
+                        <button type="button" onclick="closeMenuModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold transition">
+                            취소
+                        </button>
+                        <button type="submit" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow-md transition flex items-center">
+                            <i class="fa-solid fa-check mr-1.5"></i>저장 및 적용
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript Data & Logic -->
+    <script>
+        // Mock Default Meal Dataset for Baegam High School (Mon-Fri)
+        const defaultWeeklyMeals = [
+            {
+                id: 'mon',
+                dayName: '월요일',
+                dateStr: '2026.10.12',
+                shortDate: '10/12',
+                calories: 820,
+                score: '95%',
+                photo: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80',
+                tasteMain: '🔥 매콤달콤 춘천닭갈비',
+                tip: '월요일은 기운 나는 매콤한 춘천닭갈비와 신선한 쌈채소 데이! 단백질 풍부하게 섭취하세요.',
+                nutrients: { carbs: 95, protein: 38, fat: 18, carbsPct: 65, proteinPct: 80, fatPct: 45 },
+                features: [
+                    '🌶️ 100% 국내산 닭다리살을 사용한 수제 양념 닭갈비',
+                    '🧀 고소한 듬뿍 치즈 토핑 제공',
+                    '🥬 싱싱한 친환경 상추쌈과 쌈장'
+                ],
+                items: [
+                    { category: '밥', name: '친환경 발아현미밥', taste: '고소함', cal: 280, nutrients: '탄수화물, 식이섬유', allergen: '없음' },
+                    { category: '국', name: '칼칼한 맑은콩나물국', taste: '시원하고 맑음', cal: 60, nutrients: '아스파라긴산, 비타민C', allergen: '⑤' },
+                    { category: '메인', name: '치즈 춘천닭갈비', taste: '매콤달콤 & 단짠', cal: 340, nutrients: '고단백질, 칼슘', allergen: '②, ⑤, ⑥, ⑮' },
+                    { category: '반찬', name: '해물파전 & 양념장', taste: '바삭하고 고소함', cal: 110, nutrients: '단백질, 무기질', allergen: '①, ⑤, ⑥, ⑨, ⑰' },
+                    { category: '김치', name: '아삭 깍두기', taste: '새콤매콤', cal: 15, nutrients: '유산균, 비타민', allergen: '⑨' },
+                    { category: '후식', name: '샤인마스켓 푸딩', taste: '상큼달달', cal: 15, nutrients: '비타민C, 당분', allergen: '②' }
+                ]
+            },
+            {
+                id: 'tue',
+                dayName: '화요일',
+                dateStr: '2026.10.13',
+                shortDate: '10/13',
+                calories: 790,
+                score: '92%',
+                photo: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=800&q=80',
+                tasteMain: '🍜 얼큰 수제돈까스 라멘',
+                tip: '비타민B가 풍부한 돈육과 뜨끈한 미소라멘의 조화! 국물 맛이 일품입니다.',
+                nutrients: { carbs: 102, protein: 32, fat: 22, carbsPct: 70, proteinPct: 70, fatPct: 55 },
+                features: [
+                    '🥩 두툼한 바삭 등심돈까스 겉바속촉 수제 튀김',
+                    '🍜 진한 돈사골 육수로 우려낸 일본식 미소라멘',
+                    '🍊 비타민 보충을 위한 제주 감귤 제공'
+                ],
+                items: [
+                    { category: '밥', name: '후리카케 후식 미니밥', taste: '짭조름함', cal: 150, nutrients: '탄수화물', allergen: '⑤, ⑥' },
+                    { category: '메인', name: '돈사골 돈까스 라멘', taste: '진하고 얼큰함', cal: 420, nutrients: '단백질, 지방, 칼슘', allergen: '①, ②, ⑤, ⑥, ⑩' },
+                    { category: '반찬', name: '수제 등심돈까스 & 소스', taste: '바삭바삭', cal: 160, nutrients: '단백질, 비타민B1', allergen: '①, ⑤, ⑥, ⑩, ⑫' },
+                    { category: '샐러드', name: '양배추 단콘샐러드', taste: '고소하고 아삭함', cal: 45, nutrients: '식이섬유', allergen: '①, ⑤' },
+                    { category: '김치', name: '포기김치', taste: '매콤함', cal: 15, nutrients: '유산균', allergen: '⑨' },
+                    { category: '후식', name: '제주 생감귤', taste: '상큼함', cal: 0, nutrients: '비타민C', allergen: '없음' }
+                ]
+            },
+            {
+                id: 'wed',
+                dayName: '수요일',
+                dateStr: '2026.10.14',
+                shortDate: '10/14',
+                calories: 840,
+                score: '98%',
+                photo: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80',
+                tasteMain: '🍱 수다날 특식: 차돌볶음밥 & 탕수육',
+                tip: '매주 수요일은 [수요일은 다 먹는 날!]. 백암고 최애 인기 메뉴 구성입니다.',
+                nutrients: { carbs: 110, protein: 36, fat: 20, carbsPct: 75, proteinPct: 75, fatPct: 50 },
+                features: [
+                    '🥓 고소한 차돌박이가 듬뿍 들어간 수제 볶음밥',
+                    '🍍 찹쌀 수제 탕수육 & 과일 새콤달콤 소스',
+                    '🧃 시원한 100% 생과일 에이드 음료'
+                ],
+                items: [
+                    { category: '밥', name: '차돌박이 김치볶음밥', taste: '고소하고 매콤단짠', cal: 410, nutrients: '탄수화물, 철분, 단백질', allergen: '⑤, ⑥, ⑩, ⑯' },
+                    { category: '국', name: '팽이버섯 계란파국', taste: '부드럽고 담백함', cal: 50, nutrients: '단백질, 비타민D', allergen: '①, ⑤, ⑥' },
+                    { category: '메인', name: '찹쌀 탕수육 & 탕수소스', taste: '쫄깃하고 새콤달콤', cal: 260, nutrients: '단백질, 당질', allergen: '①, ⑤, ⑥, ⑩, ⑫' },
+                    { category: '반찬', name: '짜사이 무침', taste: '오독오독 짭조름', cal: 30, nutrients: '식이섬유', allergen: '⑤, ⑥' },
+                    { category: '김치', name: '백김치', taste: '개운하고 시원함', cal: 10, nutrients: '유산균', allergen: '없음' },
+                    { category: '음료', name: '자몽에이드', taste: '톡쏘는 달콤함', cal: 80, nutrients: '비타민C', allergen: '없음' }
+                ]
+            },
+            {
+                id: 'thu',
+                dayName: '목요일',
+                dateStr: '2026.10.15',
+                shortDate: '10/15',
+                calories: 805,
+                score: '94%',
+                photo: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
+                tasteMain: '🍖 갈비찜 & 궁중 떡볶이',
+                tip: '푹 고아 부드러운 소갈비찜과 철분 가득 굴두부찌개로 원기 회복하는 날!',
+                nutrients: { carbs: 90, protein: 42, fat: 19, carbsPct: 62, proteinPct: 88, fatPct: 48 },
+                features: [
+                    '🥩 달콤한 간장 양념이 깊게 밴 영양 소갈비찜',
+                    '🍲 매콤하고 깊은 맛의 해물 두부찌개',
+                    '🍧 디저트로 즐기는 수제 아이스크림'
+                ],
+                items: [
+                    { category: '밥', name: '칼슘 강화 검정콩밥', taste: '고소함', cal: 290, nutrients: '안토시아닌, 탄수화물', allergen: '⑤' },
+                    { category: '국', name: '얼큰 해물두부찌개', taste: '칼칼하고 시원함', cal: 95, nutrients: '고단백, 식물성지방', allergen: '⑤, ⑥, ⑧, ⑨, ⑱' },
+                    { category: '메인', name: '전통 궁중 소갈비찜', taste: '단짠부드러움', cal: 310, nutrients: '단백질, 필수아미노산', allergen: '⑤, ⑥, ⑯' },
+                    { category: '반찬', name: '잡채 & 야채부침', taste: '쫄깃하고 고소함', cal: 80, nutrients: '탄수화물', allergen: '⑤, ⑥, ⑩' },
+                    { category: '김치', name: '배추김치', taste: '매콤함', cal: 15, nutrients: '유산균', allergen: '⑨' },
+                    { category: '후식', name: '바닐라 아이스크림', taste: '달콤함', cal: 15, nutrients: '당분, 칼슘', allergen: '①, ②' }
+                ]
+            },
+            {
+                id: 'fri',
+                dayName: '금요일',
+                dateStr: '2026.10.16',
+                shortDate: '10/16',
+                calories: 830,
+                score: '96%',
+                photo: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80',
+                tasteMain: '🍕 불고기 피자 & 크림파스타',
+                tip: '즐거운 불금 특식! 수제 불고기 피자와 부드러운 까르보나라 파스타입니다.',
+                nutrients: { carbs: 105, protein: 35, fat: 23, carbsPct: 72, proteinPct: 72, fatPct: 58 },
+                features: [
+                    '🍕 직화 불고기와 풍성한 치즈의 수제 피자',
+                    '🍝 베이컨 고소한 크림 까르보나라 파스타',
+                    '🥗 상큼한 오렌지 과일 에이드'
+                ],
+                items: [
+                    { category: '밥/면', name: '베이컨 크림파스타', taste: '고소하고 부드러움', cal: 380, nutrients: '탄수화물, 칼슘', allergen: '①, ②, ⑤, ⑥, ⑩' },
+                    { category: '국', name: '양송이 수프 & 크루통', taste: '부드러움', cal: 90, nutrients: '비타민, 무기질', allergen: '②, ⑤, ⑥' },
+                    { category: '메인', name: '수제 직화 불고기 피자', taste: '단짠 & 치즈풍미', cal: 270, nutrients: '단백질, 칼슘', allergen: '②, ⑤, ⑥, ⑩, ⑯' },
+                    { category: '샐러드', name: '케이준 치킨 샐러드', taste: '아삭하고 바삭함', cal: 75, nutrients: '단백질, 비타민', allergen: '①, ⑤, ⑥, ⑮' },
+                    { category: '피클', name: '수제 오이피클', taste: '새콤아삭', cal: 15, nutrients: '비타민C', allergen: '없음' },
+                    { category: '음료', name: '생오렌지 주스', taste: '상큼함', cal: 0, nutrients: '비타민C', allergen: '없음' }
+                ]
+            }
+        ];
+
+        // Dynamic State (Loaded from localStorage if available)
+        let weeklyMeals = loadMealsFromStorage();
+
+        function loadMealsFromStorage() {
+            try {
+                const stored = localStorage.getItem('baegam_weekly_meals');
+                if (stored) return JSON.parse(stored);
+            } catch(e) { console.error('Failed to parse meals', e); }
+            return JSON.parse(JSON.stringify(defaultWeeklyMeals));
+        }
+
+        function saveMealsToStorage() {
+            try {
+                localStorage.setItem('baegam_weekly_meals', JSON.stringify(weeklyMeals));
+            } catch(e) { console.error('Failed to save meals', e); }
+        }
+
+        // State Management
+        let selectedDayId = 'mon';
+        let currentTab = 'table';
+        
+        // Initial Reviews
+        let reviews = [
+            { id: 1, dayId: 'mon', author: '3-2 김백암', rating: 5, tag: '😋 꿀맛탱', text: '오늘 춘천닭갈비 양념 진심 레전드였습니다... 치즈 추가된 게 대박!', date: '10분 전' },
+            { id: 2, dayId: 'mon', author: '박선생님 (담임)', rating: 5, tag: '🍗 고기 최고', text: '학생들과 남김없이 다 먹었네요. 영양 선생님 오늘도 감사합니다!', date: '30분 전' },
+            { id: 3, dayId: 'wed', author: '3-2 이민수', rating: 5, tag: '🌶️ 매콤달콤', text: '수다날 차돌볶음밥 기대중입니다!! 수요일 너무 좋아요.', date: '1시간 전' }
+        ];
+
+        // Window Load Initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            // Display Current Date in Badge
+            const now = new Date();
+            const timeString = `${now.getFullYear()}.${now.getMonth()+1}.${now.getDate()} (${['일','월','화','수','목','금','토'][now.getDay()]})`;
+            document.getElementById('currentTimeBadge').innerText = timeString;
+
+            // Render Date Selector Cards
+            renderDateCards();
+
+            // Select Mon by default
+            selectDate('mon');
+        });
+
+        // Render Top Horizontal Date Selector Cards
+        function renderDateCards() {
+            const container = document.getElementById('dateCardsContainer');
+            container.innerHTML = weeklyMeals.map(meal => {
+                const isSelected = meal.id === selectedDayId;
+                const borderClass = isSelected ? 'border-2 border-emerald-600 bg-emerald-50/60 shadow-md scale-[1.02]' : 'border border-slate-200 bg-white hover:border-emerald-300 hover:bg-slate-50';
+                const badgeBg = isSelected ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-700';
+
+                return `
+                    <div onclick="selectDate('${meal.id}')" 
+                         class="cursor-pointer rounded-2xl p-3.5 transition-all duration-200 flex flex-col justify-between ${borderClass}">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold px-2 py-0.5 rounded-full ${badgeBg}">
+                                ${meal.dayName} (${meal.shortDate})
+                            </span>
+                            <span class="text-2xs font-semibold text-amber-600">
+                                🔥 ${meal.calories}kcal
+                            </span>
+                        </div>
+                        <div class="my-1">
+                            <h4 class="font-bold text-xs text-slate-800 line-clamp-1">${meal.tasteMain}</h4>
+                            <p class="text-2xs text-slate-500 mt-0.5 line-clamp-1">${meal.items.slice(0, 3).map(i => i.name).join(', ')}</p>
+                        </div>
+                        <div class="mt-2 pt-2 border-t border-slate-200/60 flex items-center justify-between text-2xs text-slate-500">
+                            <span>영양 밸런스</span>
+                            <span class="font-bold text-emerald-600">${meal.score}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Handle Selecting a Date
+        function selectDate(dayId) {
+            selectedDayId = dayId;
+            const meal = weeklyMeals.find(m => m.id === dayId);
+            if (!meal) return;
+
+            // Re-render top cards highlight state
+            renderDateCards();
+
+            // Update Header Information
+            document.getElementById('selectedDateDayIcon').innerText = meal.dayName.charAt(0);
+            document.getElementById('selectedDateBadge').innerText = `${meal.dateStr} (${meal.dayName})`;
+            document.getElementById('selectedDateTitle').innerText = `${meal.dayName} 백암고 추천 급식표`;
+            document.getElementById('calorieBadge').innerText = `🔥 총 ${meal.calories} kcal`;
+
+            // Update Image & Taste Tags
+            document.getElementById('mealMainImage').src = meal.photo;
+            document.getElementById('tasteTagMain').innerText = meal.tasteMain;
+            document.getElementById('nutritionistTip').innerText = `"${meal.tip}"`;
+
+            // Update Nutrition Meter
+            document.getElementById('nutritionScore').innerText = `균형성 ${meal.score}`;
+            document.getElementById('carbsVal').innerText = `${meal.nutrients.carbs}g (${meal.nutrients.carbsPct}%)`;
+            document.getElementById('proteinVal').innerText = `${meal.nutrients.protein}g (${meal.nutrients.proteinPct}%)`;
+            document.getElementById('fatVal').innerText = `${meal.nutrients.fat}g (${meal.nutrients.fatPct}%)`;
+
+            document.getElementById('carbsBar').style.width = `${meal.nutrients.carbsPct}%`;
+            document.getElementById('proteinBar').style.width = `${meal.nutrients.proteinPct}%`;
+            document.getElementById('fatBar').style.width = `${meal.nutrients.fatPct}%`;
+
+            // Update Features List
+            const featuresContainer = document.getElementById('tasteFeatureList');
+            featuresContainer.innerHTML = meal.features.map(f => `<li class="flex items-start"><i class="fa-solid fa-check text-emerald-600 mt-0.5 mr-1.5 shrink-0"></i><span>${f}</span></li>`).join('');
+
+            // Update Meal Detail Table
+            renderMealTable(meal);
+
+            // Update Board Reviews for Selected Date
+            renderReviews();
+        }
+
+        // Render Meal Detail Table Body
+        function renderMealTable(meal) {
+            const tbody = document.getElementById('mealTableBody');
+            tbody.innerHTML = meal.items.map((item, index) => {
+                const categoryColor = index === 2 ? 'bg-amber-100 text-amber-800 font-bold' : 'bg-slate-100 text-slate-700';
+                return `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-3 text-center">
+                            <span class="text-2xs px-2 py-0.5 rounded-full ${categoryColor}">
+                                ${item.category}
+                            </span>
+                        </td>
+                        <td class="p-3 font-semibold text-slate-900">
+                            ${item.name}
+                        </td>
+                        <td class="p-3">
+                            <span class="inline-block text-2xs bg-emerald-50 text-emerald-700 font-medium px-2 py-0.5 rounded border border-emerald-200">
+                                ${item.taste}
+                            </span>
+                        </td>
+                        <td class="p-3 text-center font-mono text-slate-600">
+                            ${item.cal} kcal
+                        </td>
+                        <td class="p-3 text-slate-600">
+                            ${item.nutrients}
+                        </td>
+                        <td class="p-3 text-center text-2xs text-amber-600 font-medium">
+                            ${item.allergen}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Switch Tabs (Table vs Board)
+        function switchTab(tab) {
+            currentTab = tab;
+            const tableContent = document.getElementById('tabContentTable');
+            const boardContent = document.getElementById('tabContentBoard');
+            const btnTable = document.getElementById('tabBtnTable');
+            const btnBoard = document.getElementById('tabBtnBoard');
+
+            if (tab === 'table') {
+                tableContent.classList.remove('hidden');
+                boardContent.classList.add('hidden');
+
+                btnTable.className = "px-3.5 py-2 rounded-lg bg-white text-emerald-700 font-bold shadow-sm transition";
+                btnBoard.className = "px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition";
+            } else {
+                tableContent.classList.add('hidden');
+                boardContent.classList.remove('hidden');
+
+                btnBoard.className = "px-3.5 py-2 rounded-lg bg-white text-emerald-700 font-bold shadow-sm transition";
+                btnTable.className = "px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition";
+            }
+        }
+
+        // CHATBOT LOGIC
+        function handleChatSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            // Render User Message
+            appendUserMessage(text);
+            input.value = '';
+
+            // Process Bot Response after short delay
+            setTimeout(() => {
+                processBotResponse(text);
+            }, 400);
+        }
+
+        function sendQuickMessage(text) {
+            appendUserMessage(text);
+            setTimeout(() => {
+                processBotResponse(text);
+            }, 300);
+        }
+
+        function appendUserMessage(text) {
+            const chatWindow = document.getElementById('chatWindow');
+            const msgHTML = `
+                <div class="flex items-start justify-end space-x-2">
+                    <div class="bg-emerald-600 text-white rounded-2xl rounded-tr-none p-3 shadow-sm text-sm max-w-[85%]">
+                        <p class="font-medium">${escapeHTML(text)}</p>
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-slate-700 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
+                        나
+                    </div>
+                </div>
+            `;
+            chatWindow.insertAdjacentHTML('beforeend', msgHTML);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        function processBotResponse(query) {
+            const chatWindow = document.getElementById('chatWindow');
+            const currentMeal = weeklyMeals.find(m => m.id === selectedDayId) || weeklyMeals[0];
+            let botReplyHTML = '';
+
+            const lower = query.toLowerCase();
+
+            if (lower.includes('급식 알려줘') || lower.includes('오늘 급식') || lower.includes('메뉴')) {
+                botReplyHTML = `
+                    <p class="font-bold text-slate-800 text-sm">🍱 백암고 [${currentMeal.dayName}] 급식표 안내해드립니다!</p>
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2 mt-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="font-bold text-emerald-700">메인: ${currentMeal.tasteMain}</span>
+                            <span class="bg-amber-100 text-amber-800 font-bold px-1.5 py-0.5 rounded text-2xs">🔥 ${currentMeal.calories} kcal</span>
+                        </div>
+                        <div class="text-xs text-slate-700 space-y-1 pt-1 border-t border-slate-200">
+                            ${currentMeal.items.map(i => `<div>• <strong>${i.name}</strong> <span class="text-2xs text-slate-500">(${i.taste})</span></div>`).join('')}
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-500">💡 아래 날짜 카드를 눌러주시면 영양성분표 상세 화면을 확인할 수 있어!</p>
+                `;
+            } else if (lower.includes('내일') || lower.includes('칼로리')) {
+                const nextDay = weeklyMeals[1]; // Tuesday
+                botReplyHTML = `
+                    <p class="font-bold text-slate-800 text-sm">🔥 칼로리 및 영양소 안내입니다!</p>
+                    <p class="text-xs text-slate-600 mt-1">
+                        • <strong>${currentMeal.dayName} (${currentMeal.shortDate})</strong>: <span class="text-amber-600 font-bold">${currentMeal.calories} kcal</span><br>
+                        • <strong>내일 (${nextDay.dayName})</strong>: <span class="text-amber-600 font-bold">${nextDay.calories} kcal</span>
+                    </p>
+                    <div class="mt-2 text-xs bg-emerald-50 p-2 rounded-lg text-emerald-800">
+                        ✨ 백암고 급식은 청소년 하루 권장 칼로리(800~850kcal)에 딱 맞추어져 더욱 건강합니다!
+                    </div>
+                `;
+            } else if (lower.includes('영양소') || lower.includes('영양')) {
+                botReplyHTML = `
+                    <p class="font-bold text-slate-800 text-sm">🥗 ${currentMeal.dayName} 주요 영양소 성분 안내</p>
+                    <ul class="text-xs text-slate-600 mt-1 space-y-1">
+                        <li>• <strong>탄수화물:</strong> ${currentMeal.nutrients.carbs}g</li>
+                        <li>• <strong>단백질:</strong> ${currentMeal.nutrients.protein}g (고단백 식단)</li>
+                        <li>• <strong>지방:</strong> ${currentMeal.nutrients.fat}g</li>
+                        <li>• <strong>영양 균형 점수:</strong> <span class="text-emerald-600 font-bold">${currentMeal.score}</span></li>
+                    </ul>
+                `;
+            } else {
+                botReplyHTML = `
+                    <p class="font-medium text-slate-800 text-sm">궁금한 급식 정보를 알려드릴게요! 😊</p>
+                    <p class="text-xs text-slate-600 mt-1">
+                        "급식 알려줘", "내일 급식 칼로리 알려줘", 또는 "영양소 정보 보여줘"라고 말해보세요!
+                    </p>
+                `;
+            }
+
+            const botMsgHTML = `
+                <div class="flex items-start space-x-2.5">
+                    <div class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
+                        백암
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-2xl rounded-tl-none p-3.5 shadow-sm text-sm max-w-[85%] space-y-2">
+                        ${botReplyHTML}
+                    </div>
+                </div>
+            `;
+
+            chatWindow.insertAdjacentHTML('beforeend', botMsgHTML);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        // BOARD & REVIEWS LOGIC
+        function submitReview(e) {
+            e.preventDefault();
+            const author = document.getElementById('reviewAuthor').value.trim();
+            const rating = parseInt(document.getElementById('reviewRating').value);
+            const tag = document.getElementById('reviewTasteTag').value;
+            const text = document.getElementById('reviewText').value.trim();
+
+            if (!author || !text) return;
+
+            const newReview = {
+                id: Date.now(),
+                dayId: selectedDayId,
+                author: author,
+                rating: rating,
+                tag: tag,
+                text: text,
+                date: '방금 전'
+            };
+
+            reviews.unshift(newReview);
+            document.getElementById('reviewText').value = '';
+
+            renderReviews();
+            alert('급식 맛 한줄평이 성공적으로 등록되었습니다!');
+        }
+
+        function renderReviews() {
+            const container = document.getElementById('reviewListContainer');
+            const dayReviews = reviews.filter(r => r.dayId === selectedDayId);
+
+            document.getElementById('reviewCountText').innerText = `총 ${dayReviews.length}개의 한줄평이 있습니다`;
+
+            if (dayReviews.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 bg-slate-50 rounded-xl border border-dashed border-slate-300 text-slate-400 text-xs">
+                        <i class="fa-regular fa-comment-dots text-3xl mb-2 text-slate-300"></i>
+                        <p>아직 작성된 한줄평이 없습니다. 첫 번째 리뷰를 남겨보세요!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = dayReviews.map(r => {
+                const stars = '⭐'.repeat(r.rating);
+                return `
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-2 hover:border-emerald-200 transition">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-xs text-slate-900">${escapeHTML(r.author)}</span>
+                                <span class="text-xs text-amber-500">${stars}</span>
+                                <span class="text-2xs bg-emerald-100 text-emerald-800 font-medium px-2 py-0.5 rounded-full">${r.tag}</span>
+                            </div>
+                            <span class="text-2xs text-slate-400">${r.date}</span>
+                        </div>
+                        <p class="text-xs text-slate-700 leading-relaxed">${escapeHTML(r.text)}</p>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Helper Utility to Escape HTML
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+
+        // --- MENU MODAL REGISTRATION & EDIT LOGIC ---
+
+        function openMenuModal(dayId) {
+            const targetDay = dayId || selectedDayId || 'mon';
+            document.getElementById('modalDaySelect').value = targetDay;
+            populateModalForm(targetDay);
+            document.getElementById('menuModal').classList.remove('hidden');
+        }
+
+        function closeMenuModal() {
+            document.getElementById('menuModal').classList.add('hidden');
+        }
+
+        function populateModalForm(dayId) {
+            const meal = weeklyMeals.find(m => m.id === dayId) || weeklyMeals[0];
+            
+            document.getElementById('modalDateStr').value = meal.dateStr;
+            document.getElementById('modalCalories').value = meal.calories;
+            document.getElementById('modalTasteMain').value = meal.tasteMain;
+            document.getElementById('modalPhoto').value = meal.photo || '';
+            document.getElementById('modalTip').value = meal.tip || '';
+
+            // Populate 6 Item Rows
+            const itemsContainer = document.getElementById('modalItemsContainer');
+            const defaultCategories = ['밥', '국', '메인', '반찬', '김치', '후식'];
+
+            let rowsHTML = '';
+            for (let i = 0; i < 6; i++) {
+                const item = meal.items[i] || { category: defaultCategories[i], name: '', taste: '', cal: 100, nutrients: '단백질, 비타민', allergen: '없음' };
+                rowsHTML += `
+                    <div class="grid grid-cols-12 gap-1.5 items-center bg-slate-50 p-2 rounded-lg border border-slate-200 text-2xs">
+                        <input type="text" id="itemCat_${i}" value="${escapeHTML(item.category)}" placeholder="구분" class="col-span-2 bg-white border border-slate-300 rounded p-1 font-bold text-center">
+                        <input type="text" id="itemName_${i}" value="${escapeHTML(item.name)}" required placeholder="식단 메뉴명" class="col-span-3 bg-white border border-slate-300 rounded p-1 font-semibold">
+                        <input type="text" id="itemTaste_${i}" value="${escapeHTML(item.taste)}" placeholder="맛 특징" class="col-span-2 bg-white border border-slate-300 rounded p-1">
+                        <input type="number" id="itemCal_${i}" value="${item.cal}" placeholder="kcal" class="col-span-1 bg-white border border-slate-300 rounded p-1 text-center">
+                        <input type="text" id="itemNutrient_${i}" value="${escapeHTML(item.nutrients)}" placeholder="주요 영양소" class="col-span-2 bg-white border border-slate-300 rounded p-1">
+                        <input type="text" id="itemAllergen_${i}" value="${escapeHTML(item.allergen)}" placeholder="알레르기" class="col-span-2 bg-white border border-slate-300 rounded p-1 text-center">
+                    </div>
+                `;
+            }
+            itemsContainer.innerHTML = rowsHTML;
+        }
+
+        function saveMenuForm(e) {
+            e.preventDefault();
+            const dayId = document.getElementById('modalDaySelect').value;
+            const mealIndex = weeklyMeals.findIndex(m => m.id === dayId);
+            if (mealIndex === -1) return;
+
+            const dateStr = document.getElementById('modalDateStr').value.trim();
+            const calories = parseInt(document.getElementById('modalCalories').value) || 800;
+            const tasteMain = document.getElementById('modalTasteMain').value.trim();
+            const photo = document.getElementById('modalPhoto').value.trim() || 'https://placehold.co/600x400/e2e8f0/475569?text=Baegam+Meal+Photo';
+            const tip = document.getElementById('modalTip').value.trim();
+
+            // Extract short date (MM/DD)
+            const parts = dateStr.split('.');
+            const shortDate = parts.length >= 3 ? `${parts[1]}/${parts[2]}` : dateStr;
+
+            // Extract 6 Items
+            const items = [];
+            for (let i = 0; i < 6; i++) {
+                const name = document.getElementById(`itemName_${i}`).value.trim();
+                if (name) {
+                    items.push({
+                        category: document.getElementById(`itemCat_${i}`).value.trim() || '메뉴',
+                        name: name,
+                        taste: document.getElementById(`itemTaste_${i}`).value.trim() || '담백함',
+                        cal: parseInt(document.getElementById(`itemCal_${i}`).value) || 100,
+                        nutrients: document.getElementById(`itemNutrient_${i}`).value.trim() || '탄수화물, 단백질',
+                        allergen: document.getElementById(`itemAllergen_${i}`).value.trim() || '없음'
+                    });
+                }
+            }
+
+            // Update Features list based on top items
+            const features = items.slice(0, 3).map(it => `✨ ${it.name} (${it.taste})`);
+
+            // Update State
+            weeklyMeals[mealIndex] = {
+                ...weeklyMeals[mealIndex],
+                dateStr,
+                shortDate,
+                calories,
+                tasteMain,
+                photo,
+                tip,
+                features: features.length > 0 ? features : weeklyMeals[mealIndex].features,
+                items: items
+            };
+
+            // Save to localStorage & refresh UI
+            saveMealsToStorage();
+            selectDate(dayId);
+            closeMenuModal();
+
+            // Append bot announcement
+            const chatWindow = document.getElementById('chatWindow');
+            if (chatWindow) {
+                const noticeHTML = `
+                    <div class="flex items-start space-x-2.5">
+                        <div class="w-8 h-8 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
+                            알림
+                        </div>
+                        <div class="bg-amber-50 border border-amber-200 text-amber-900 rounded-2xl rounded-tl-none p-3 text-xs shadow-sm">
+                            📢 <strong>[${weeklyMeals[mealIndex].dayName}]</strong> 급식 메뉴가 새롭게 수정/등록되었습니다!
+                        </div>
+                    </div>
+                `;
+                chatWindow.insertAdjacentHTML('beforeend', noticeHTML);
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            }
+        }
+
+        function resetDefaultMeals() {
+            if (confirm('모든 수정을 취소하고 초기 백암고 기본 식단으로 되돌리시겠습니까?')) {
+                weeklyMeals = JSON.parse(JSON.stringify(defaultWeeklyMeals));
+                saveMealsToStorage();
+                selectDate(selectedDayId);
+                closeMenuModal();
+            }
+        }
+    </script>
+</body>
+</html>
+```
